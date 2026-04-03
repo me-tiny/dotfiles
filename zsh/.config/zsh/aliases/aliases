@@ -96,3 +96,8 @@ alias lst="eza --color=always --group-directories-first --tree --level=3"
 # Bat #
 #######
 alias cat="bat --paging=auto"
+
+########
+# tldr #
+########
+alias tl="tldr --list | fzf --preview 'tldr {} --color always' | xargs tldr"
