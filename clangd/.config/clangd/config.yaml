@@ -2,7 +2,7 @@ If:
   PathMatch: .*\.(c|h)
 CompileFlags:
   Add:
-    - -std=c23
+    - -std=c89
     - -Wall
     - -Wextra
     - -Werror
