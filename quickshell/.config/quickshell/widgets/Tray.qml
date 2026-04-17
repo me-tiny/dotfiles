@@ -153,9 +153,15 @@ Item {
 
         Text {
             anchors.centerIn: parent
-            text: "󰍜"
+            // FIX: icon broken?
+            // related:
+            // https://github.com/quickshell-mirror/quickshell/commit/f0d0216b3d293f2813112cd74d74d4e7de57931e
+            // https://github.com/quickshell-mirror/quickshell/commit/7208f68bb7f4bf7e476b828decde1321ae544f5d
+            // text: "󰍜"
+            // related icons: ≡ (U+2261), 𑁔 (U+11054), ☰(U+2630)
+            text: "𑁔"
             color: theme.text
-            font.pixelSize: theme.fontSize - 2
+            font.pixelSize: theme.fontSize + 6
             font.family: theme.fontFamily
         }
 
