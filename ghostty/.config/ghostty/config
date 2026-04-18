@@ -1,11 +1,5 @@
 # Theme
-theme = Kanso Zen
-# theme = tokyonight_moon
-# theme = gruvbox-material
-# theme = onedarkpro_onedark
-
-# Initial command
-# command = tmux attach-session || tmux
+theme = Rose Pine
 
 # Font
 # font-family = "MonoLisa"
@@ -62,10 +56,10 @@ font-synthetic-style = false
 # # font-feature = ss17
 
 # For variable font
-# font-variation = wght=600
-# font-variation-bold = wght=800
-# font-variation-italic = wght=600
-# font-variation-bold-italic = wght=800
+font-variation = wght=600
+font-variation-bold = wght=800
+font-variation-italic = wght=600
+font-variation-bold-italic = wght=800
 
 # Undercurl
 adjust-underline-thickness = 1
@@ -85,7 +79,6 @@ mouse-hide-while-typing = true
 
 # Window
 window-decoration = server
-# window-vsync = true
 window-padding-y = 0
 window-padding-x = 0
 window-padding-balance = true
@@ -94,7 +87,6 @@ background-opacity = 1
 
 # Misc
 scrollback-limit = 10000000
-# auto-update = check
 custom-shader-animation = false
 shell-integration-features = no-cursor,no-sudo,title
 bell-features = no-system,no-title,no-attention
