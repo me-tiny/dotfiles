@@ -18,3 +18,7 @@
   path = nvim/.config/nvim
   url = git@github.com:MetinYalcinkaya/nvim.git
   update = merge
+[submodule "fish/.config/fish/plugins/tide"]
+  path = fish/.config/fish/plugins/tide
+  url = git@github.com:plttn/tide
+  update = merge
