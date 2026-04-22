@@ -1,4 +1,4 @@
-function togidle --description "toggle pc idle"
+function togidle -d "toggle pc idle"
     if not pgrep -x "hypridle" > /dev/null
         hypridle > /dev/null & disown
         notify-send "💤 PC will now sleep"

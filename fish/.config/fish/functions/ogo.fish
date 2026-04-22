@@ -1,4 +1,4 @@
-function ogo --description "sort uncategorised notes into proper tags"
+function ogo -d "sort uncategorised notes into proper tags"
     set -l vault_dir "/home/metin/Documents/Obsidian/Main"
     set -l source_dir "uncategorised"
     set -l dest_dir "notes"

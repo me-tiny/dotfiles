@@ -1,4 +1,4 @@
-function onew --description "new note with template"
+function onew -d "new note with template"
     if test (count $argv) -ne 1
         echo "usage: $(status current-command) \"file name\""
         return 1
