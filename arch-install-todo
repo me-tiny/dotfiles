@@ -1,0 +1,124 @@
+> list of minimum needed installs
+> list for automating later
+
+change /etc/makepkg.conf:
+COMPRESSXZ=(xz -c -T {cores} -z -)
+MAKEFLAGS="-f{cores}"
+use nproc to set it?
+
+paru:
+sudo pacman -S --needed base-devel
+git clone https://aur.archlinux.org/paru.git
+cd paru
+makepkg -si
+
+remove:
+kitty
+dolphin
+
+packages (pacman):
+fish
+zsh?
+ghostty
+hyprlock
+hypridle
+hyprpaper
+hyprshot
+xdg-desktop-portal
+xdg-desktop-portal-hyprland
+wlsunset
+libinput-tools
+thunar
+thunar-volman
+rofi-wayland
+rofi-calc
+rofi-emoji
+calf
+mandoc
+lsp-plugins
+easyeffects
+wl-clipboard
+cliphist
+wl-clip-persist
+discord
+spotify-launcher
+swaync
+playerctl
+hyprpicker
+ripgrep
+eza
+bat
+vlc-plugin-ffmpeg
+zip
+unzip
+btop
+tmux
+pavucontrol
+nwg-look
+noto-fonts
+noto-fonts-cjk
+noto-fonts-emoji
+noto-fonts-extra
+tectonic
+imagemagick
+tree-sitter-cli
+clang
+gvfs
+gvfs-mtp
+sass
+adw-gtk-theme
+tectonic
+imagemagick
+tree-sitter-cli
+tmux
+pavucontrol
+nwg-look
+noto-fonts
+noto-fonts-cjk
+noto-fonts-emoji
+noto-fonts-extra
+tectonic
+imagemagick
+tree-sitter-cli
+clang
+gvfs
+gvfs-mtp
+sass
+adw-gtk-theme
+fd
+uv
+git
+rustup
+typst
+github-cli
+
+packages (aur):
+1password
+waybar-cava
+zen-browser-bin
+
+## add 1password zen-browser entry to allowed browsers so plugin and desktop app can interact
+mkdir /etc/1password
+echo "zen-bin" > /etc/1password/custom_allowed_browsers
+
+## disable ps5 touchpad: https://old.reddit.com/r/hyprland/comments/1hkv6qx/disabling_touchpad_on_dualsense_controller/m3m53x5/
+
+# make rule file in etc/udev/rules.d/72-ds5tp.rules
+# fill with:
+```
+# disable dualsense touchpad acting as mouse
+# usb (check libinput --list-devices (libinput-tools package))
+ATTRS{name}=="Sony Interactive Entertainment DualSense Wireless Controller Touchpad", ENV{LIBINPUT_IGNORE_DEVICE}="1"
+# bluetooth
+ATTRS{name}=="Wireless Controller Touchpad", ENV{LIBINPUT_IGNORE_DEVICE}="1"
+```
+# then reload udev and reconnect controller
+```
+sudo udevadm control --reload-rules && sudo udevadm trigger
+```
+
+--
+
+# disable recent files
+
+gsettings set org.gnome.desktop.privacy remember-recent-files false
