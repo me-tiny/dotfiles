@@ -1,16 +1,28 @@
-> list of minimum needed installs
-> list for automating later
+# arch install script todo
+
+> list of minimum needed installs and custom stuff, for automating later
+
+## makepkg use all the cores
 
 change /etc/makepkg.conf:
+
+```bash
+# /etc/makepkg.conf
 COMPRESSXZ=(xz -c -T {cores} -z -)
 MAKEFLAGS="-f{cores}"
-use nproc to set it?
+# use nproc to set it?
+```
 
-paru:
+## paru install
+
+```bash
 sudo pacman -S --needed base-devel
 git clone https://aur.archlinux.org/paru.git
 cd paru
 makepkg -si
+```
+
+## packages
 
 remove:
 kitty
@@ -98,27 +110,39 @@ waybar-cava
 zen-browser-bin
 
 ## add 1password zen-browser entry to allowed browsers so plugin and desktop app can interact
+
+```bash
 mkdir /etc/1password
 echo "zen-bin" > /etc/1password/custom_allowed_browsers
-
-## disable ps5 touchpad: https://old.reddit.com/r/hyprland/comments/1hkv6qx/disabling_touchpad_on_dualsense_controller/m3m53x5/
-
-# make rule file in etc/udev/rules.d/72-ds5tp.rules
-# fill with:
 ```
+
+## disable ps5 touchpad
+
+> https://old.reddit.com/r/hyprland/comments/1hkv6qx/disabling_touchpad_on_dualsense_controller/m3m53x5/
+
+make rule file in etc/udev/rules.d/72-ds5tp.rules
+fill with:
+
+```bash
 # disable dualsense touchpad acting as mouse
 # usb (check libinput --list-devices (libinput-tools package))
 ATTRS{name}=="Sony Interactive Entertainment DualSense Wireless Controller Touchpad", ENV{LIBINPUT_IGNORE_DEVICE}="1"
 # bluetooth
 ATTRS{name}=="Wireless Controller Touchpad", ENV{LIBINPUT_IGNORE_DEVICE}="1"
-```
 # then reload udev and reconnect controller
-```
 sudo udevadm control --reload-rules && sudo udevadm trigger
 ```
 
---
+## disable recent files
 
-# disable recent files
-
+```bash
 gsettings set org.gnome.desktop.privacy remember-recent-files false
+```
+
+## ssh agent
+
+> stop sshd from littering `~/.ssh/agent/`
+
+```bash
+echo "StreamLocalBindUnlink yes" > /etc/ssh/sshd_config
+```
