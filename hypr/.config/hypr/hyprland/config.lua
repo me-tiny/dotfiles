@@ -1,4 +1,4 @@
-local color = require("config.colors")
+local color = require("hyprland.colors")
 hl.config({
     input = {
         repeat_rate = 50,

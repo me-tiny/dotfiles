@@ -8,7 +8,9 @@ hl.monitor({
 hl.monitor({
     output = "DP-4",
     mode = "2560x1440@144",
-    position = "auto-right",
+    -- HACK: was auto-right, broken after lua conversion
+    -- relevant pr: https://github.com/hyprwm/Hyprland/pull/14393
+    position = "2880x0",
     scale = "1",
 })
 
