@@ -1,18 +1,25 @@
 hl.on("hyprland.start", function()
-    hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
-    hl.exec_cmd("dbus-update-activation-environment --systemd --all")
-    hl.exec_cmd("systemctl --user import-environment --systemd --all")
-    hl.exec_cmd("easyeffects --gapplication-service")
-    hl.exec_cmd("gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark'")
-    hl.exec_cmd("gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'")
-    hl.exec_cmd("wl-paste --type text --watch cliphist store")
-    hl.exec_cmd("wl-paste --type image --watch cliphist store")
-    hl.exec_cmd("wl-clip-persist --clipboard regular")
-    hl.exec_cmd("1password --silent")
-    hl.exec_cmd("thunar --daemon")
-    hl.exec_cmd("wlsunset -l -33.9 -L 151.2")
-    hl.exec_cmd("qs & hyprpaper & swaync & hypridle")
-    hl.exec_cmd("[workspace 1 silent] ghostty")
-    hl.exec_cmd("[workspace 1 silent] zen-browser")
-    hl.exec_cmd("[workspace 7 silent] discord & spotify-launcher")
+    local autostart = {
+        "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP",
+        "dbus-update-activation-environment --systemd --all",
+        "systemctl --user import-environment --systemd --all",
+        "easyeffects --gapplication-service",
+        "gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark'",
+        "gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'",
+        "wl-paste --type text --watch cliphist store",
+        "wl-paste --type image --watch cliphist store",
+        "wl-clip-persist --clipboard regular",
+        "systemctl --user start hyprpolkitagent",
+        "1password --silent",
+        "thunar --daemon",
+        "wlsunset -l -33.9 -L 151.2",
+        "qs & hyprpaper & swaync & hypridle",
+        "[workspace 1 silent] ghostty",
+        "[workspace 1 silent] zen-browser",
+        "[workspace 7 silent] spotify-launcher & discord",
+    }
+
+    for _, cmd in ipairs(autostart) do
+        hl.exec_cmd(cmd)
+    end
 end)
