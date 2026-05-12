@@ -1,0 +1,125 @@
+hl.workspace_rule({ workspace = "1", monitor = "DP-3", default = true })
+hl.workspace_rule({ workspace = "2", monitor = "DP-3" })
+hl.workspace_rule({ workspace = "3", monitor = "DP-3" })
+hl.workspace_rule({ workspace = "4", monitor = "DP-3" })
+hl.workspace_rule({ workspace = "5", monitor = "DP-3" })
+hl.workspace_rule({ workspace = "6", monitor = "DP-3" })
+
+hl.workspace_rule({ workspace = "7", monitor = "DP-4", default = true })
+hl.workspace_rule({ workspace = "8", monitor = "DP-4" })
+hl.workspace_rule({ workspace = "9", monitor = "DP-4" })
+hl.workspace_rule({ workspace = "10", monitor = "DP-4" })
+
+hl.window_rule({
+    name = "suppress-maximise-events",
+    match = { class = ".*" },
+    suppress_event = "maximize",
+})
+
+hl.window_rule({
+    name = "fix-xwayland-drags",
+    match = {
+        class = "^$",
+        title = "^$",
+        xwayland = true,
+        float = true,
+        fullscreen = false,
+        pin = false,
+    },
+    no_focus = true,
+})
+
+hl.window_rule({
+    name = "xwaylandvideobridge-for-screenshare",
+    match = {
+        class = "^(xwaylandvideobridge)$",
+    },
+    opacity = "0.0 override",
+    no_anim = true,
+    no_focus = true,
+    no_initial_focus = true,
+    max_size = { 1, 1 },
+    no_blur = true,
+})
+
+hl.window_rule({
+    name = "steam-in-workspace-4",
+    match = {
+        title = "^()$",
+        class = "^(steam)$",
+    },
+    stay_focused = true,
+    min_size = { 1, 1 },
+    workspace = "4 silent",
+})
+
+hl.window_rule({
+    name = "spotify-in-workspace-7",
+    match = {
+        class = "^(spotify)$",
+    },
+    workspace = "7 silent",
+})
+
+hl.window_rule({
+    name = "discord-in-workspace-7",
+    match = {
+        class = "^(discord)$",
+    },
+    workspace = "7 silent",
+})
+
+hl.window_rule({
+    name = "runelite-fix",
+    match = {
+        class = "^(net-runelite-client-RuneLite)$",
+        title = "^(win(.*))$",
+        float = true,
+    },
+    no_initial_focus = true,
+    tile = true,
+})
+
+hl.window_rule({
+    name = "runelite-fix-no-float-focus",
+    match = {
+        class = "^(net-runelite-client-RuneLite)$",
+        title = "^(win(.*))$",
+        float = true,
+    },
+    no_focus = true,
+})
+
+hl.window_rule({
+    name = "zoom-float-main",
+    match = {
+        class = "^(zoom)$",
+    },
+    float = true,
+})
+
+hl.window_rule({
+    name = "zoom-float-no-focus",
+    match = {
+        class = "zoom",
+        float = true,
+    },
+    no_initial_focus = true,
+})
+
+hl.window_rule({
+    name = "godot-float",
+    match = {
+        class = "org.godotengine.Editor",
+    },
+    float = true,
+})
+
+hl.window_rule({
+    name = "godot-tile",
+    match = {
+        class = "org.godotengine.Editor",
+        initial_title = "^Godot$",
+    },
+    tile = true,
+})
