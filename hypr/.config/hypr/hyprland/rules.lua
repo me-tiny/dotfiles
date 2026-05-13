@@ -45,12 +45,20 @@ hl.window_rule({
 hl.window_rule({
     name = "steam-in-workspace-4",
     match = {
+        title = "^.+$",
+        class = "^(steam)$",
+    },
+    workspace = "4 silent",
+})
+
+hl.window_rule({
+    name = "steam-floats",
+    match = {
         title = "^()$",
         class = "^(steam)$",
     },
     stay_focused = true,
     min_size = { 1, 1 },
-    workspace = "4 silent",
 })
 
 hl.window_rule({
