@@ -6,9 +6,6 @@
 # Env files
 *.env
 
-# Private aliases
-priv_aliases
-
 # Icon must end with two \r
 Icon
 
@@ -26,4 +23,6 @@ Icon
 
 # Zsh
 .zsh_history
-.zcompdump
+.zcompdump*
+.zsh_sessions/
+priv_aliases
