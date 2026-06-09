@@ -16,7 +16,8 @@ hl.on("hyprland.start", function()
         "qs & hyprpaper & swaync & hypridle",
         "[workspace 1 silent] ghostty",
         "[workspace 1 silent] zen-browser",
-        "[workspace 7 silent] spotify-launcher & discord",
+        "[workspace 7 silent] sh -c 'until getent hosts spclient.wg.spotify.com >/dev/null; do sleep 0.5; done; spotify-launcher'",
+        "[workspace 7 silent] discord",
     }
 
     for _, cmd in ipairs(autostart) do
