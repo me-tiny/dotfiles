@@ -29,8 +29,9 @@ kitty
 dolphin
 
 packages (pacman):
-fish
+fish?
 zsh?
+just
 ghostty
 hyprlock
 hypridle
