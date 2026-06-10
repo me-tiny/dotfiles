@@ -1,8 +1,8 @@
 #!/bin/zsh
 
 if ! pgrep -x "easyeffects" > /dev/null; then
-  echo "Starting EasyEffects"
-  easyeffects --gapplication-service & disown
+    echo "Starting EasyEffects"
+    easyeffects --gapplication-service & disown
 else
-  echo "EasyEffects already running"
+    echo "EasyEffects already running"
 fi

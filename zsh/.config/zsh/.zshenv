@@ -1,5 +1,14 @@
-export HISTFILE="$ZDOTDIR/.zsh_history"
 export DOTFILES="$HOME/.dotfiles"
-export PATH="$ZDOTDIR/scripts:$PATH"
-export PATH="/usr/bin:$PATH"
-export PATH="$HOME/.cargo/bin:$PATH"
+export HISTFILE="$ZDOTDIR/.zsh_history"
+
+export EDITOR="nvim"
+export VISUAL="nvim"
+export MANPAGER="nvim +Man!"
+
+typeset -U path PATH
+path=(
+    $ZDOTDIR/scripts
+    $HOME/.cargo/bin
+    $HOME/.local/bin
+    $path
+)

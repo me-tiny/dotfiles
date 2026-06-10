@@ -2,35 +2,27 @@
 
 set -euo pipefail
 
-NVIM_URL="https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
-ARCHIVE_NAME="${NVIM_URL##*/}"
-EXTRACTED_DIR_NAME="nvim-linux-x86_64"
+REPO_URL="git@github.com:neovim/neovim"
 INSTALL_PREFIX="/usr/"
+BUILD_TYPE="Release"
+EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX}"
 
 cleanup() {
     if [[ -n "${TMP_DIR:-}" && -d "${TMP_DIR}" ]]; then
         echo "Cleaning up temporary directory: ${TMP_DIR}"
         rm -rf "${TMP_DIR}"
+        echo "done, nvim built from source into ${INSTALL_PREFIX}."
     fi
 }
 
 SUDO_CMD=""
-if [[ $EUID -ne 0 && "$INSTALL_PREFIX" == "/usr/" ]]; then
-    if command -v sudo >/dev/null 2>&1; then
+if [[ $EUID -ne 0 ]]; then
+    if command -v sudo >/dev/null; then
         SUDO_CMD="sudo"
-        echo "This script will need sudo privileges to install to ${INSTALL_PREFIX}"
+        echo "sudo privileges needed to install to ${INSTALL_PREFIX}"
         $SUDO_CMD -v
     else
-        echo "Error: sudo is required to install to ${INSTALL_PREFIX} but not found." >&2
-        exit 1
-    fi
-elif [[ $EUID -ne 0 && "$INSTALL_PREFIX" != "/usr" && ! -w "$INSTALL_PREFIX" ]]; then
-     if command -v sudo >/dev/null 2>&1; then
-        SUDO_CMD="sudo"
-        echo "This script will need sudo privileges to install to ${INSTALL_PREFIX} (no write access)"
-        $SUDO_CMD -v
-    else
-        echo "Error: sudo is required to install to ${INSTALL_PREFIX} (no write access) but not found." >&2
+        echo "error: sudo is required to install to ${INSTALL_PREFIX} but not found."
         exit 1
     fi
 fi
@@ -39,33 +31,13 @@ fi
 TMP_DIR=$(mktemp -d -t nvim_install_XXXXXX)
 trap cleanup EXIT INT TERM
 
-echo "Created temporary directory: ${TMP_DIR}"
+echo "cloning nvim into ${TMP_DIR}..."
+git clone --depth 1 "${REPO_URL}" "${TMP_DIR}"
+
 cd "${TMP_DIR}"
 
-echo "Downloading latest nvim nightly from ${NVIM_URL}..."
-if ! curl -fsLO "${NVIM_URL}"; then
-    echo "Error: Failed to download Neovim archive." >&2
-    exit 1
-fi
-echo "Finished downloading ${ARCHIVE_NAME}"
+echo "building nvim (${BUILD_TYPE})..."
+make CMAKE_BUILD_TYPE="${BUILD_TYPE}" CMAKE_EXTRA_FLAGS="${EXTRA_FLAGS}"
 
-echo "Extracting ${ARCHIVE_NAME}..."
-if ! tar xzvf "${ARCHIVE_NAME}"; then
-    echo "Error: Failed to extract Neovim archive." >&2
-    exit 1
-fi
-echo "Finished extracting"
-
-if [[ ! -d "${EXTRACTED_DIR_NAME}" ]]; then
-    echo "Error: Extracted directory '${EXTRACTED_DIR_NAME}' not found." >&2
-    exit 1
-fi
-
-echo "Installing Neovim to ${INSTALL_PREFIX}..."
-if ! ${SUDO_CMD} cp -f -r "${EXTRACTED_DIR_NAME}/." "${INSTALL_PREFIX}/"; then
-    echo "Error: Failed to move Neovim files to ${INSTALL_PREFIX}." >&2
-    exit 1
-fi
-echo "Finished installing"
-
-echo "All done! Neovim nightly installed to ${INSTALL_PREFIX}."
+echo "installing to ${INSTALL_PREFIX}..."
+${SUDO_CMD} make install
