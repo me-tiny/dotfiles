@@ -1,5 +1,8 @@
+[EffectsPipelines]
+bypass=true
+
 [Presets]
-lastLoadedOutputPreset=HD6xx
+lastLoadedOutputPreset=HD800S
 
 [Spectrum]
 state=false
@@ -16,7 +19,7 @@ visiblePlugin=rnnoise#0
 mostUsedPresets=HD6xx,Focal Clear,HD800S
 outputDevice=alsa_output.pci-0000_74_00.6.iec958-stereo
 plugins=equalizer#0
-usedPresets=Focal Clear:7,HD6xx:11,HD800S:5
+usedPresets=Focal Clear:7,HD6xx:11,HD800S:6
 visiblePage=pluginsPage
 visiblePlugin=equalizer#0
 
