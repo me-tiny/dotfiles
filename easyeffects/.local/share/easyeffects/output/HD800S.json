@@ -3,7 +3,7 @@
         "blocklist": [],
         "equalizer#0": {
             "balance": 0.0,
-            "bypass": false,
+            "bypass": true,
             "input-gain": 0.0,
             "left": {
                 "band0": {
@@ -52,7 +52,7 @@
                 },
                 "band4": {
                     "frequency": 2100.0,
-                    "gain": 3.8,
+                    "gain": 3.7600000000000007,
                     "mode": "RLC (BT)",
                     "mute": false,
                     "q": 0.9,
@@ -169,7 +169,7 @@
                 },
                 "band4": {
                     "frequency": 2100.0,
-                    "gain": 3.8,
+                    "gain": 3.7600000000000007,
                     "mode": "RLC (BT)",
                     "mute": false,
                     "q": 0.9,

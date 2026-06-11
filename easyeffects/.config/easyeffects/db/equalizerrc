@@ -108,6 +108,7 @@ band8Type=0
 band9Type=0
 
 [soe][Equalizer#0]
+bypass=true
 numBands=10
 outputGain=-7.5
 
@@ -149,7 +150,7 @@ band3Frequency=1000
 band3Gain=-0.9
 band3Q=1.4
 band4Frequency=2100
-band4Gain=3.8
+band4Gain=3.7600000000000007
 band4Q=0.9
 band5Frequency=2600
 band5Gain=-1
@@ -206,7 +207,7 @@ band3Frequency=1000
 band3Gain=-0.9
 band3Q=1.4
 band4Frequency=2100
-band4Gain=3.8
+band4Gain=3.7600000000000007
 band4Q=0.9
 band5Frequency=2600
 band5Gain=-1
