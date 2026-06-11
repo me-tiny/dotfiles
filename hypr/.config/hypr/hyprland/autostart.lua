@@ -2,7 +2,8 @@ hl.on("hyprland.start", function()
     local autostart = {
         "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP",
         "dbus-update-activation-environment --systemd --all",
-        "systemctl --user import-environment --systemd --all",
+        "systemctl --user import-environment $(env | cut -d'=' -f 1)",
+        "systemctl --user start hyprland-session.target",
         "easyeffects --gapplication-service",
         "gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark'",
         "gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'",
