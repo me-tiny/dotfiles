@@ -125,6 +125,20 @@ ungoogled-chromium-bin
 
 ## general
 
+### graphical-session.target
+
+> without uwsm, need to spin up/kill graphical-session{-pre}.target manually
+
+```
+; ~/.config/systemd/user/hyprland-session.target, ran in autostart.lua
+[Unit]
+Description=Hyprland session
+BindsTo=graphical-session.target
+Before=graphical-session.target
+Wants=graphical-session-pre.target
+After=graphical-session-pre.target
+```
+
 ### add 1password zen-browser entry to allowed browsers so plugin and desktop app can interact
 
 ```bash
@@ -161,6 +175,49 @@ gsettings set org.gnome.desktop.privacy remember-recent-files false
 
 ```bash
 echo "StreamLocalBindUnlink yes" > /etc/ssh/sshd_config
+```
+
+### sudo default editor/visual
+
+> when doing something like `sudo systemctl edit {}`, it defaults to nano,
+> overide to pass user env EDITOR/VISUAL
+
+```bash
+sudo visudo
+```
+
+then add the following, probably around where `env_keep` commented out options
+are
+
+```
+Defaults env_keep += "EDITOR VISUAL"
+```
+
+### networkd wait only on ethernet
+
+> [!NOTE] ideally do above before, nano sucks
+
+> networkd hangs when wlan adapter is present but not set up, tries connecting
+> until timeout (120s), so pin it ethernet interface
+
+find link name first
+
+```bash
+networkctl list
+```
+
+edit
+
+```bash
+sudo systemctl edit systemd-networkd-wait-online.service
+```
+
+and add, replacing `{}` with proper one
+
+```conf
+[Service]
+ExecStart=
+ExecStart=/usr/lib/systemd/systemd-networkd-wait-online --interface=enp{}s{}
 ```
 
 ## gaming
