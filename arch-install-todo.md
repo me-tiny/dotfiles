@@ -104,20 +104,35 @@ git
 rustup
 typst
 github-cli
+gamemode
+mangohud
 
 packages (aur):
 1password
+1password-cli
 waybar-cava
 zen-browser-bin
+betterbird-bin
+calibre-bin
+ghidra-desktop
+hyprqt6engine
+libdeep_filder_ladspa-bin
+localsend-bin
+obsbot-camera-control
+obsidian-headless-bin
+prettierd
+ungoogled-chromium-bin
 
-## add 1password zen-browser entry to allowed browsers so plugin and desktop app can interact
+## general
+
+### add 1password zen-browser entry to allowed browsers so plugin and desktop app can interact
 
 ```bash
 mkdir /etc/1password
 echo "zen-bin" > /etc/1password/custom_allowed_browsers
 ```
 
-## disable ps5 touchpad
+### disable ps5 touchpad
 
 > https://old.reddit.com/r/hyprland/comments/1hkv6qx/disabling_touchpad_on_dualsense_controller/m3m53x5/
 
@@ -134,16 +149,26 @@ ATTRS{name}=="Wireless Controller Touchpad", ENV{LIBINPUT_IGNORE_DEVICE}="1"
 sudo udevadm control --reload-rules && sudo udevadm trigger
 ```
 
-## disable recent files
+### disable recent files
 
 ```bash
 gsettings set org.gnome.desktop.privacy remember-recent-files false
 ```
 
-## ssh agent
+### ssh agent
 
 > stop sshd from littering `~/.ssh/agent/`
 
 ```bash
 echo "StreamLocalBindUnlink yes" > /etc/ssh/sshd_config
+```
+
+## gaming
+
+### steam vulkan shaders speed up
+
+> steam processing shaders is slow af cause it just uses one thread
+
+```bash
+echo "unShaderBackgroudProcessingThreads {num}" > ~/.steam/steam/steam_dev.cfg
 ```
