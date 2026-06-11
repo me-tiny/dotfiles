@@ -4,20 +4,16 @@
   signingkey = ~/.ssh/id_ed25519.pub
 [core]
   editor = nvim
-  excludesfile = ~/.gitignore_global
-  compression = 9
-  whitespace = error
-  preloadindex = true
 [init]
   defaultBranch = main
 [status]
   branch = true
   showStash = true
-  showUntrackedFiles = all
 [gpg]
   format = ssh
 [gpg "ssh"]
   program = "/opt/1Password/op-ssh-sign"
+  allowedSignersFile = ~/.config/git/allowed_signers
 [commit]
   gpgsign = true
 [push]
