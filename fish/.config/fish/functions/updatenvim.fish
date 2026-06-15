@@ -1,7 +1,7 @@
 function updatenvim -d "build nvim from source"
     # make CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=/usr/"
     set -l repo_url "git@github.com:neovim/neovim"
-    set -l install_prefix "/usr/"
+    set -l install_prefix "/usr/local"
     set -l build_type "Release"
     set -l extra_flags "-DCMAKE_INSTALL_PREFIX=$install_prefix"
 
