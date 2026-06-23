@@ -14,8 +14,17 @@ Singleton {
     readonly property color blue:    "#89b4fa"
     readonly property color green:   "#a6e3a1"
 
-    readonly property string fontFamily: "MonoLisa"
+    readonly property string fontFamily: "MonoLisaText"
     readonly property int fontSize: 18
+
+    readonly property int fontWeight: Font.DemiBold
+    readonly property int fontGrade: 0
+
+    readonly property var fontFeatures: ({
+        "calt": 1,
+        "liga": 0,
+        "dlig": 0,
+    })
 
     readonly property int barHeight: 32
     readonly property int padding: 8

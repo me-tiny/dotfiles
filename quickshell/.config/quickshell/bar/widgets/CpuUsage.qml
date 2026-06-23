@@ -7,4 +7,5 @@ import qs.services as Services
 BarText {
     text: "CPU: " + Services.Cpu.usage + "%"
     color: Theme.yellow
+    tabular: true
 }
