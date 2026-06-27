@@ -78,24 +78,33 @@ hl.window_rule({
 })
 
 hl.window_rule({
-    name = "runelite-fix",
+    name = "runelite-main-float",
     match = {
         class = "^(net-runelite-client-RuneLite)$",
-        title = "^(win(.*))$",
-        float = true,
+        title = "^(RuneLite)$",
     },
-    no_initial_focus = true,
-    tile = true,
+    float = true,
+    size = { 1439, 809 },
 })
 
 hl.window_rule({
-    name = "runelite-fix-no-float-focus",
+    name = "runelite-no-float-focus",
     match = {
         class = "^(net-runelite-client-RuneLite)$",
         title = "^(win(.*))$",
-        float = true,
     },
+    no_initial_focus = true,
     no_focus = true,
+})
+
+hl.window_rule({
+    name = "runelite-launcher-float",
+    match = {
+        class = "^(net-runelite-(client-RuneLite|launcher-Launcher))$",
+        title = "^(RuneLite Launcher)$",
+    },
+    float = true,
+    no_initial_focus = true,
 })
 
 hl.window_rule({
