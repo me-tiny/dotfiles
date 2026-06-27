@@ -16,9 +16,12 @@ visiblePlugin=rnnoise#0
 mostUsedPresets=HD800S,HD6xx,Focal Clear
 outputDevice=alsa_output.pci-0000_74_00.6.iec958-stereo
 plugins=equalizer#0
-usedPresets=Focal Clear:7,HD6xx:11,HD800S:11
+usedPresets=Focal Clear:7,HD6xx:11,HD800S:17
 visiblePage=pluginsPage
 visiblePlugin=equalizer#0
+
+[Style]
+forceBreezeTheme=false
 
 [Window]
 height=790
