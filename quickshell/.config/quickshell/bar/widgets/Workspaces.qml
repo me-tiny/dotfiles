@@ -1,27 +1,34 @@
 import QtQuick
 import QtQuick.Layouts
+import Quickshell
 import Quickshell.Hyprland
 
 import qs.config
+import qs.components
 
 RowLayout {
     id: root
     required property var panel
 
-    FontMetrics {
-        id: fm
+    TextMetrics {
+        id: digitMetrics
         font.family: Theme.fontFamily
         font.pixelSize: Theme.fontSize
-        font.bold: true
+        font.weight: Font.Bold
+        font.variableAxes: ({ "wght": Font.Bold, "GRAD": Theme.fontGrade })
+        font.features: ({ "tnum": 1 })
+        text: "0"
     }
 
-    readonly property int em: Math.max(1, Math.round(fm.averageCharacterWidth))
+    readonly property int em: Math.max(1, Math.round(digitMetrics.advanceWidth))
     spacing: Math.round(em * 0.15)
 
     Repeater {
-        model: Hyprland.workspaces.values
-            .filter(ws => ws.id > 0)
-            .filter(ws => ws.monitor && ws.monitor.name === root.panel.screen.name)
+        model: ScriptModel {
+            values: [...Hyprland.workspaces.values]
+                .filter(ws => ws.id > 0 && ws.monitor?.name === root.panel.screen.name)
+                .sort((a, b) => a.id - b.id)
+        }
 
         Rectangle {
             id: cell
@@ -36,21 +43,26 @@ RowLayout {
             readonly property int minCell: Math.round(root.em * 1.2)
             Layout.preferredWidth: Math.max(minCell, Math.ceil(label.contentWidth) + padX * 2)
 
-            Text {
+            BarText {
                 id: label
                 text: cell.modelData.id
                 color: cell.isFocused ? Theme.teal : Theme.overlay
-                font.family: Theme.fontFamily
-                font.pixelSize: Theme.fontSize
-                font.bold: true
+                weight: Font.Bold
+                tabular: true
                 anchors.centerIn: parent
+            }
+
+            TextMetrics {
+                id: ink
+                font: label.font
+                text: label.text
             }
 
             Rectangle {
                 height: Math.max(2, Math.round(root.em * 0.18))
-                width: Math.ceil(label.contentWidth)
+                width: Math.ceil(ink.tightBoundingRect.width)
+                x: Math.round(label.x + ink.tightBoundingRect.x)
                 color: Theme.mauve
-                anchors.horizontalCenter: label.horizontalCenter
                 anchors.bottom: parent.bottom
                 opacity: cell.isFocused ? 1 : 0
             }

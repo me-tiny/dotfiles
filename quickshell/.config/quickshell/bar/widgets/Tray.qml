@@ -2,18 +2,20 @@ import QtQuick
 import Quickshell.Hyprland
 
 import qs.config
+import qs.components
 
 Item {
     id: root
     required property var panel
+
     property string mode: "closed"
     property var menuRoot: null
     property var menuStack: []
     readonly property bool overlayOpen: mode !== "closed"
-    property bool drawerHovered: false
-    property bool menuHovered: false
+
+    property bool popupHovered: false
     readonly property bool pointerInside:
-        buttonHover.containsMouse || drawerHovered || menuHovered
+        buttonHover.containsMouse || popupHovered
 
     function showDrawer() {
         _beginOverlay()
@@ -31,7 +33,7 @@ Item {
     function backToDrawer() {
         menuStack = []
         menuRoot = null
-        showDrawer()
+        mode = "drawer"
     }
 
     function pushMenu(entry) { menuStack = menuStack.concat([entry]) }
@@ -39,9 +41,12 @@ Item {
 
     function closeAll() {
         mode = "closed"
+        _endOverlay()
+    }
+
+    function clearMenus() {
         menuStack = []
         menuRoot = null
-        _endOverlay()
     }
 
     function _beginOverlay() {
@@ -70,14 +75,8 @@ Item {
     HyprlandFocusGrab {
         id: focusGrab
         active: false
-        windows: [ panel, drawer, menu ]
+        windows: [ panel ]
         onCleared: closeAll()
-    }
-
-    FocusScope {
-        id: panelKeys
-        focus: root.overlayOpen
-        Keys.onEscapePressed: (e) => { if (root.overlayOpen) { closeAll(); e.accepted = true } }
     }
 
     implicitWidth: button.implicitWidth
@@ -87,15 +86,13 @@ Item {
         id: button
         implicitWidth: 24
         implicitHeight: 24
-        radius: 6
-        color: buttonHover.containsMouse ? Qt.rgba(1, 1, 1, 0.06) : "transparent"
+        radius: Theme.rounding
+        color: buttonHover.containsMouse ? Theme.hover : "transparent"
 
-        Text {
+        BarText {
             anchors.centerIn: parent
-            text: "𑁔"
-            color: Theme.text
-            font.family: Theme.fontFamily
-            font.pixelSize: Theme.fontSize + 6
+            text: "\ud804\udc54"
+            font.pixelSize: Theme.fontSizeIcon
         }
 
         MouseArea {
@@ -107,21 +104,9 @@ Item {
         }
     }
 
-    readonly property int popupWidth: Math.max(drawer.boxWidth, menu.boxWidth)
 
-    function applyAnchor(win) {
-        const p = panel.contentItem.mapFromItem(button, 0, button.height)
-        win.anchor.rect.y = p.y + 4
-        win.anchor.rect.x = Math.max(0, panel.width - popupWidth)
-    }
-
-    TrayDrawer {
-        id: drawer
-        tray: root
-    }
-
-    TrayMenu {
-        id: menu
+    TrayPopup {
+        id: popup
         tray: root
     }
 }

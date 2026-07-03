@@ -16,6 +16,8 @@ Singleton {
 
     readonly property string fontFamily: "MonoLisaText"
     readonly property int fontSize: 18
+    readonly property int fontSizeSmall: fontSize - 2
+    readonly property int fontSizeIcon: fontSize + 6
 
     readonly property int fontWeight: Font.DemiBold
     readonly property int fontGrade: 0
@@ -30,5 +32,10 @@ Singleton {
     readonly property int padding: 8
     readonly property int spacing: 8
 
+    readonly property color hover: Qt.rgba(1, 1, 1, 0.06)
+    readonly property int rounding: 6
+    readonly property int popupRounding: 10
+
     readonly property int popupAnimMs: 180
+    readonly property int popoutSpace: 600
 }

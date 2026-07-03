@@ -10,7 +10,7 @@ BarText {
         precision: SystemClock.Minutes
     }
 
-    text: Qt.formatDateTime(clock.date, "ddd, MMM, dd - hh:mm AP")
+    text: Qt.formatDateTime(clock.date, "ddd, MMM dd - hh:mm AP")
     color: Theme.mauve
     tabular: true
 }

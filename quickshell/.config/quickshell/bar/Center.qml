@@ -1,15 +1,6 @@
-import QtQuick
-
 import qs.bar.widgets as W
 
-Item {
+W.NowPlaying {
     anchors.centerIn: parent
-    implicitWidth: now.width
-    implicitHeight: now.implicitHeight
-
-    W.NowPlaying {
-        id: now
-        anchors.centerIn: parent
-        maxWidth: 500
-    }
+    maxWidth: 500
 }
