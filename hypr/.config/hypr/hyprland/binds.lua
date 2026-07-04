@@ -28,6 +28,7 @@ hl.bind(main_mod .. " + SHIFT + C", hl.dsp.exec_cmd(color_picker))
 hl.bind(main_mod .. " + V", hl.dsp.exec_cmd(clipboard))
 hl.bind("CTRL + SHIFT + 4", hl.dsp.exec_cmd(screenshot))
 hl.bind(main_mod .. " + SHIFT + I", hl.dsp.exec_cmd("togidle"))
+hl.bind(main_mod .. " + SHIFT + P", hl.dsp.exec_cmd("1password --quick-access"))
 
 hl.bind("XF86AudioPlay", hl.dsp.exec_cmd(music_player .. " play-pause"))
 hl.bind("XF86AudioNext", hl.dsp.exec_cmd(music_player .. " next"))
