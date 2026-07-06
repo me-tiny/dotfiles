@@ -10,7 +10,6 @@ alias pmorphan="pacman -Qdtq"
 
 alias orev="nvim $HOME/Documents/Obsidian/Main/inbox/*.md"
 
-
 alias ls="eza -l --color=always --group-directories-first"
 alias lst="eza --color=always --group-directories-first --tree --level=3"
 alias cat="bat"
