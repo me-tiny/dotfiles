@@ -84,7 +84,7 @@ hl.window_rule({
         title = "^(RuneLite)$",
     },
     float = true,
-    size = { 1439, 809 },
+    size = { 1532, 844 },
 })
 
 hl.window_rule({
