@@ -106,6 +106,7 @@ typst
 github-cli
 gamemode
 mangohud
+nix
 
 packages (aur):
 1password
@@ -218,6 +219,14 @@ and add, replacing `{}` with proper one
 [Service]
 ExecStart=
 ExecStart=/usr/lib/systemd/systemd-networkd-wait-online --interface=enp{}s{}
+```
+
+### nix
+
+```
+sudo pacman -S nix
+sudo systemctl enable --now nim-daemon.service
+sudo usermod -aG nix-users $USER
 ```
 
 ## gaming
