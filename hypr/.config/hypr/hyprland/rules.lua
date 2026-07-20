@@ -108,7 +108,7 @@ hl.window_rule({
 })
 
 hl.window_rule({
-    name = "zoom-float-main",
+    name = "zoom-float-default",
     match = {
         class = "^(zoom)$",
     },
@@ -116,11 +116,46 @@ hl.window_rule({
 })
 
 hl.window_rule({
-    name = "zoom-float-no-focus",
+    name = "zoom-tile-primary",
     match = {
-        class = "zoom",
-        float = true,
+        class = "^(zoom)$",
+        title = "^(Zoom Workplace|Zoom Meeting|Meeting|Zoom Cloud Meetings)$",
     },
+    tile = true,
+    idle_inhibit = "always",
+})
+
+hl.window_rule({
+    name = "zoom-toasts",
+    match = {
+        class = "^(zoom)$",
+        title = "^(zoom)$",
+    },
+    no_focus = true,
+    no_initial_focus = true,
+    no_anim = true,
+    no_blur = true,
+    no_shadow = true,
+})
+
+hl.window_rule({
+    name = "zoom-popups-stay-focused",
+    match = {
+        class = "^(zoom)$",
+        title = "^(menu window|confirm window)$",
+    },
+    stay_focused = true,
+    no_anim = true,
+})
+
+hl.window_rule({
+    name = "zoom-screenshare-chrome",
+    match = {
+        class = "^(zoom)$",
+        title = "^(as_toolbar|zoom_linux_float_video_window)$",
+    },
+    pin = true,
+    no_focus = true,
     no_initial_focus = true,
 })
 
