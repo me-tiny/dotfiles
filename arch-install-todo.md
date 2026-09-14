@@ -229,6 +229,40 @@ sudo systemctl enable --now nim-daemon.service
 sudo usermod -aG nix-users $USER
 ```
 
+### wooting chromium access
+
+make rule file in etc/udev/rules.d/70-wooting.rules
+fill with:
+
+```
+# Wooting One Legacy
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="ff01", MODE:="0660", GROUP="input", TAG+="uaccess", TAG+="snap_chromium_chromedriver", TAG+="snap_chromium_chromium"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="ff01", MODE:="0660", GROUP="input", TAG+="uaccess"
+# Wooting One update mode
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="2402", MODE:="0660", GROUP="input", TAG+="uaccess", TAG+="snap_chromium_chromedriver", TAG+="snap_chromium_chromium"
+
+# Wooting Two Legacy
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="ff02", MODE:="0660", GROUP="input", TAG+="uaccess", TAG+="snap_chromium_chromedriver", TAG+="snap_chromium_chromium"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="ff02", MODE:="0660", GROUP="input", TAG+="uaccess"
+# Wooting Two update mode
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="2403", MODE:="0660", GROUP="input", TAG+="uaccess", TAG+="snap_chromium_chromedriver", TAG+="snap_chromium_chromium"
+
+# Generic Wootings
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="31e3", MODE:="0660", GROUP="input", TAG+="uaccess", TAG+="snap_chromium_chromedriver", TAG+="snap_chromium_chromium"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="31e3", MODE:="0660", GROUP="input", TAG+="uaccess"
+```
+
+### sora chromium access
+
+make rule file in etc/udev/rules.d/70-wooting.rules
+fill with:
+
+```
+# Ninjutso Sora V3
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="093a", ATTRS{idProduct}=="eb02", MODE:="0660", GROUP="input", TAG+="uaccess"
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="093a", ATTRS{idProduct}=="e010", MODE:="0660", GROUP="input", TAG+="uaccess"
+```
+
 ## gaming
 
 ### steam vulkan shaders speed up
