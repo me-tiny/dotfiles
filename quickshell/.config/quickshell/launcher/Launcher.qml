@@ -130,11 +130,6 @@ Scope {
 
         onVisibleChanged: if (visible) keys.forceActiveFocus()
 
-        Rectangle {
-            anchors.fill: parent
-            color: Theme.scrim
-        }
-
         MouseArea {
             anchors.fill: parent
             onClicked: root.close()
