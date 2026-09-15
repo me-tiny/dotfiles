@@ -252,6 +252,8 @@ SUBSYSTEM=="hidraw", ATTRS{idVendor}=="31e3", MODE:="0660", GROUP="input", TAG+=
 SUBSYSTEM=="usb", ATTRS{idVendor}=="31e3", MODE:="0660", GROUP="input", TAG+="uaccess"
 ```
 
+then reload with `sudo udevadm control --reload-rules && sudo udevadm trigger`
+
 ### sora chromium access
 
 make rule file in etc/udev/rules.d/70-wooting.rules
@@ -262,6 +264,8 @@ fill with:
 SUBSYSTEM=="hidraw", ATTRS{idVendor}=="093a", ATTRS{idProduct}=="eb02", MODE:="0660", GROUP="input", TAG+="uaccess"
 SUBSYSTEM=="hidraw", ATTRS{idVendor}=="093a", ATTRS{idProduct}=="e010", MODE:="0660", GROUP="input", TAG+="uaccess"
 ```
+
+then reload with `sudo udevadm control --reload-rules && sudo udevadm trigger`
 
 ## gaming
 
