@@ -28,6 +28,10 @@ Scope {
         root.cursorActive = true
         pointerGate.reset()
         root.opened = true
+        Qt.callLater(() => {
+            list.cancelFlick()
+            list.positionViewAtBeginning()
+        })
     }
 
     function close() {

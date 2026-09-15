@@ -15,6 +15,7 @@ Singleton {
 
     property var _scanHidden: ({})
     property var _userHidden: ({})
+    property var _history: Object.create(null)
 
     function isHidden(entry) {
         const id = String(entry?.id ?? "")
@@ -22,7 +23,7 @@ Singleton {
     }
 
     function search(query) {
-        return AppSearch.sortedEntries(DesktopEntries.applications.values, query, root.isHidden)
+        return AppSearch.sortedEntries(DesktopEntries.applications.values, query, root.isHidden, root._history)
     }
 
     function name(entry) { return AppSearch.entryName(entry) }
@@ -42,6 +43,39 @@ Singleton {
             Quickshell.execDetached([root.terminal, "-e"].concat([...entry.command]))
         else
             entry.execute()
+
+        const id = String(entry.id || "")
+        if (!id) return
+        const now = Date.now()
+        root._history[id] = { score: AppSearch.frecency(root._history[id], now) + 1, lastUsed: now }
+        root.revision++
+        root._historyFile.setText(JSON.stringify(root._history) + "\n")
+    }
+
+    readonly property var _historyFile: FileView {
+        path: Quickshell.stateDir + "/launcher-history.json"
+        preload: false
+        blockLoading: true
+        atomicWrites: true
+        printErrors: false
+    }
+
+    function _loadHistory() {
+        const history = Object.create(null)
+        try {
+            const parsed = JSON.parse(root._historyFile.text())
+            if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+                for (const id of Object.keys(parsed)) {
+                    const usage = parsed[id]
+                    if (usage && typeof usage.score === "number" && Number.isFinite(usage.score)
+                        && usage.score > 0 && typeof usage.lastUsed === "number"
+                        && Number.isFinite(usage.lastUsed) && usage.lastUsed >= 0)
+                        history[id] = { score: usage.score, lastUsed: usage.lastUsed }
+                }
+            }
+        } catch (e) {}
+        root._history = history
+        root.revision++
     }
 
     function _parseIds(raw) {
@@ -83,5 +117,8 @@ Singleton {
         function onValuesChanged() { root._rescan.restart(); root.revision++ }
     }
 
-    Component.onCompleted: _scan.running = true
+    Component.onCompleted: {
+        root._loadHistory()
+        _scan.running = true
+    }
 }

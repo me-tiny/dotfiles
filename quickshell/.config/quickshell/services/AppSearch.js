@@ -96,9 +96,16 @@ function fuzzyScore(entry, query) {
   return 4000 - name.length
 }
 
-function sortedEntries(values, query, hiddenCallback) {
+function frecency(usage, now) {
+  if (!usage) return 0
+  // Each launch adds one point; its weight halves every seven days.
+  return usage.score * Math.pow(0.5, Math.max(0, now - usage.lastUsed) / (7 * 24 * 60 * 60 * 1000))
+}
+
+function sortedEntries(values, query, hiddenCallback, history) {
   var q = String(query || "").trim()
   var rows = []
+  var now = Date.now()
 
   for (var i = 0; i < values.length; i++) {
     var entry = values[i]
@@ -108,11 +115,13 @@ function sortedEntries(values, query, hiddenCallback) {
     if (!name) continue
     var score = fuzzyScore(entry, q)
     if (score < 0) continue
-    rows.push({ entry: entry, score: score, key: entrySortKey(entry), name: name.toLowerCase() })
+    rows.push({ entry: entry, score: score, frecency: frecency(history && history[entry.id], now),
+                key: entrySortKey(entry), name: name.toLowerCase() })
   }
 
   rows.sort(function(a, b) {
     if (q && a.score !== b.score) return b.score - a.score
+    if (a.frecency !== b.frecency) return b.frecency - a.frecency
     if (a.key < b.key) return -1
     if (a.key > b.key) return 1
     if (a.name < b.name) return -1
