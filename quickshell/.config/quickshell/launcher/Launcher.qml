@@ -36,7 +36,6 @@ Scope {
 
     function close() {
         root.opened = false
-        root.filterText = ""
     }
 
     function toggle() {
@@ -122,7 +121,7 @@ Scope {
         id: win
 
         screen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name) ?? Quickshell.screens[0]
-        visible: root.opened
+        visible: root.opened || card.height > 0
         anchors { top: true; bottom: true; left: true; right: true }
         exclusionMode: ExclusionMode.Ignore
         color: "transparent"
@@ -146,14 +145,21 @@ Scope {
             id: card
 
             width: Math.min(Theme.launcherWidth, win.width - 40)
-            height: Theme.padding * 2 + header.height + Theme.spacing + 1 + Theme.spacing + win.listHeight
+            readonly property real contentHeight: Theme.padding * 2 + header.height + Theme.spacing + 1 + Theme.spacing + win.listHeight
+            height: root.opened ? contentHeight : 0
             x: Math.round((win.width - width) / 2)
-            y: Math.round(win.height * 0.22)
-
-            radius: Theme.popupRounding
-            color: Theme.base
-            border.width: 1
-            border.color: Theme.overlay
+            y: Theme.edgeMargin + Theme.barHeight - 0.5
+            z: 1
+            clip: true
+            enabled: root.opened
+            color: "transparent"
+            Behavior on height {
+                NumberAnimation {
+                    duration: root.opened ? Theme.popupAnimMs : Theme.dismissAnimMs
+                    easing.type: Easing.OutCubic
+                }
+            }
+            AttachedSurface { target: card; flushRight: false }
 
             MouseArea { anchors.fill: parent }
 
@@ -190,7 +196,10 @@ Scope {
             }
 
             ColumnLayout {
-                anchors.fill: parent
+                height: card.contentHeight - Theme.padding * 2
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
                 anchors.margins: Theme.padding
                 spacing: Theme.spacing
 
@@ -257,7 +266,8 @@ Scope {
                             width: ListView.view.width
                             height: Theme.launcherRowHeight
                             radius: Theme.rounding
-                            color: row.hasCursor ? Theme.surface0 : "transparent"
+                            color: row.hasCursor ? Theme.surface1 : "transparent"
+                            Behavior on color { ColorAnimation { duration: 120 } }
 
                             RowLayout {
                                 anchors.fill: parent
@@ -312,8 +322,8 @@ Scope {
                         opacity: list.contentHeight > list.height
                                  ? Math.max(0, Math.min(1, (list.contentY - list.originY) / height)) : 0
                         gradient: Gradient {
-                            GradientStop { position: 0; color: Theme.base }
-                            GradientStop { position: 1; color: Qt.rgba(Theme.base.r, Theme.base.g, Theme.base.b, 0) }
+                            GradientStop { position: 0; color: Theme.shellSurface }
+                            GradientStop { position: 1; color: Qt.rgba(Theme.shellSurface.r, Theme.shellSurface.g, Theme.shellSurface.b, 0) }
                         }
                     }
 
@@ -324,8 +334,8 @@ Scope {
                         opacity: list.contentHeight > list.height
                                  ? Math.max(0, Math.min(1, (list.originY + list.contentHeight - list.height - list.contentY) / height)) : 0
                         gradient: Gradient {
-                            GradientStop { position: 0; color: Qt.rgba(Theme.base.r, Theme.base.g, Theme.base.b, 0) }
-                            GradientStop { position: 1; color: Theme.base }
+                            GradientStop { position: 0; color: Qt.rgba(Theme.shellSurface.r, Theme.shellSurface.g, Theme.shellSurface.b, 0) }
+                            GradientStop { position: 1; color: Theme.shellSurface }
                         }
                     }
 

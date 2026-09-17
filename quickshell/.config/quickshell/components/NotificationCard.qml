@@ -40,29 +40,31 @@ Rectangle {
         return out
     }
 
-    // strip, rewrite newlines, strip again: the <br/> rewrite can split a
-    // kept tag and expose an <img> the first pass couldn't see
     function styledBody(body) {
         return stripImageTags(stripImageTags(String(body || "")).replace(/\r\n|\r|\n/g, "<br/>"))
     }
 
-    implicitHeight: content.implicitHeight + 20
-    x: exiting ? width + 48 : 0
-    opacity: exiting ? 0 : 1
-
-    Behavior on x {
+    implicitHeight: content.implicitHeight + 28
+    height: exiting ? 0 : implicitHeight
+    clip: popup
+    Behavior on height {
         enabled: card.popup
-        NumberAnimation { duration: 220; easing.type: Easing.InQuad }
-    }
-    Behavior on opacity {
-        enabled: card.popup
-        NumberAnimation { duration: 200 }
+        NumberAnimation { duration: Theme.dismissAnimMs; easing.type: Easing.OutCubic }
     }
 
     radius: Theme.popupRounding
-    color: popup ? Theme.base : Theme.surface0
+    color: popup ? Theme.popupSurface : Theme.shellSurface
     border.width: 1
-    border.color: critical ? Theme.red : Theme.overlay
+    border.color: critical ? Theme.red : Theme.outline
+
+    Rectangle {
+        x: 0
+        y: 16
+        width: 3
+        height: Math.max(0, parent.height - 32)
+        radius: 1.5
+        color: card.critical ? Theme.red : Theme.mauve
+    }
 
     HoverHandler {
         id: hover
@@ -81,7 +83,7 @@ Rectangle {
 
     Timer {
         running: card.exiting
-        interval: 240
+        interval: Theme.dismissAnimMs + 20
         onTriggered: Services.Notifications.finalizeHide(card.notif)
     }
 
@@ -105,7 +107,7 @@ Rectangle {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.margins: 10
+        anchors.margins: 14
         spacing: 10
 
         Item {
@@ -179,13 +181,13 @@ Rectangle {
                     Layout.preferredHeight: 22
                     Layout.alignment: Qt.AlignTop
                     radius: Theme.rounding
-                    color: Theme.red
-                    opacity: closeHover.containsMouse ? 1 : 0.85
+                    color: closeHover.containsMouse ? Theme.red : Theme.hover
+                    Behavior on color { ColorAnimation { duration: 120 } }
 
                     BarText {
                         anchors.centerIn: parent
                         text: "󰅖"
-                        color: Theme.base
+                        color: closeHover.containsMouse ? Theme.base : Theme.subtext
                         font.pixelSize: Theme.fontSizeSmall
                     }
 

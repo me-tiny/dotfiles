@@ -11,9 +11,9 @@ PanelWindow {
     id: win
 
     screen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name) ?? Quickshell.screens[0]
-    visible: Services.Notifications.popups.length > 0
+    visible: Services.Notifications.popups.length > 0 || drawer.height > 0
     anchors { top: true; right: true }
-    margins { top: 8 }
+    exclusionMode: ExclusionMode.Ignore
     exclusiveZone: 0
     color: "transparent"
     surfaceFormat.opaque: false
@@ -21,66 +21,45 @@ PanelWindow {
     WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.namespace: "quickshell:notifications"
 
-    implicitWidth: 448
-    implicitHeight: Theme.popoutSpace
+    implicitWidth: 444 + Theme.edgeMargin + Theme.popupRounding
+    implicitHeight: Theme.barExtent + Theme.popoutSpace
+    mask: Region { item: drawer }
 
-    mask: Region {
-        x: 20
-        y: 0
-        width: 420
-        height: lv.contentHeight
-    }
+    Item {
+        id: drawer
+        z: 1
+        x: Theme.popupRounding
+        y: Theme.edgeMargin + Theme.barHeight - 0.5
+        width: 444
+        height: Services.Notifications.popups.length > 0
+                ? Math.min(Theme.popoutSpace, lv.contentHeight + 24) : 0
+        clip: true
 
-    ListView {
-        id: lv
-        anchors.fill: parent
-        anchors.leftMargin: 20
-        anchors.rightMargin: 8
-        spacing: 8
-        interactive: false
-
-        model: ScriptModel {
-            values: Services.Notifications.popups
+        Behavior on height {
+            NumberAnimation { duration: Theme.popupAnimMs; easing.type: Easing.OutCubic }
         }
+        AttachedSurface { target: drawer; borderlessRight: true }
 
-        delegate: NotificationCard {
-            required property var modelData
-            width: ListView.view.width
-            notif: modelData
-            popup: true
-        }
+        ListView {
+            id: lv
+            anchors.fill: parent
+            anchors.margins: 12
+            spacing: 8
+            clip: true
+            boundsBehavior: Flickable.StopAtBounds
 
-        add: Transition {
-            NumberAnimation {
-                property: "x"
-                from: lv.width + 8
-                to: 0
-                duration: 340
-                easing.type: Easing.OutBack
-                easing.overshoot: 0.7
+            model: ScriptModel { values: Services.Notifications.popups }
+
+            delegate: NotificationCard {
+                required property var modelData
+                width: ListView.view.width
+                notif: modelData
+                popup: true
             }
-            NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 140 }
-        }
 
-        populate: Transition {
-            NumberAnimation {
-                property: "x"
-                from: lv.width + 8
-                to: 0
-                duration: 340
-                easing.type: Easing.OutBack
-                easing.overshoot: 0.7
+            displaced: Transition {
+                NumberAnimation { property: "y"; duration: Theme.popupAnimMs; easing.type: Easing.OutCubic }
             }
-            NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 140 }
-        }
-
-        displaced: Transition {
-            NumberAnimation {
-                properties: "x,y"
-                duration: 240
-                easing.type: Easing.OutQuint
-            }
-            NumberAnimation { property: "opacity"; to: 1; duration: 120 }
         }
     }
 }

@@ -91,7 +91,8 @@ Item {
         implicitWidth: 24
         implicitHeight: 24
         radius: Theme.rounding
-        color: buttonHover.containsMouse ? Theme.hover : "transparent"
+        color: root.overlayOpen ? Theme.surface1 : buttonHover.containsMouse ? Theme.hover : "transparent"
+        Behavior on color { ColorAnimation { duration: 120 } }
 
         BarText {
             anchors.centerIn: parent

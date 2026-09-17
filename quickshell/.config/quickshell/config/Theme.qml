@@ -17,6 +17,11 @@ Singleton {
     readonly property color blue:    "#89b4fa"
     readonly property color green:   "#a6e3a1"
 
+    readonly property color shellSurface: "#282838"
+    readonly property color popupSurface: "#303042"
+    readonly property color outline: "#55566f"
+    readonly property color shadow: Qt.rgba(0, 0, 0, 0.38)
+
     readonly property string fontFamily: "MonoLisaText"
     readonly property int fontSize: 18
     readonly property int fontSizeSmall: fontSize - 2
@@ -31,15 +36,19 @@ Singleton {
         "dlig": 0,
     })
 
-    readonly property int barHeight: 32
+    readonly property int barHeight: 36
+    readonly property int edgeMargin: 0
+    readonly property int panelGap: 0
+    readonly property int barExtent: edgeMargin + barHeight + panelGap
     readonly property int padding: 8
     readonly property int spacing: 8
 
     readonly property color hover: Qt.rgba(1, 1, 1, 0.06)
-    readonly property int rounding: 6
-    readonly property int popupRounding: 10
+    readonly property int rounding: 8
+    readonly property int popupRounding: 16
 
-    readonly property int popupAnimMs: 180
+    readonly property int popupAnimMs: 380
+    readonly property int dismissAnimMs: 280
     readonly property int popoutSpace: 600
 
     readonly property color scrim: Qt.rgba(0, 0, 0, 0.45)

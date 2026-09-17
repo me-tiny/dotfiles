@@ -15,27 +15,28 @@ Rectangle {
     Component.onCompleted: {
         parent = tray.panel.contentItem
         tray.panel.popout = popout
+        tray.panel.popoutBridge = hoverBridge
     }
 
-    readonly property int tuck: 2
-    z: -1
+    z: 1
     clip: true
 
     anchors.top: parent.top
-    anchors.topMargin: Theme.barHeight - tuck
+    anchors.topMargin: Theme.edgeMargin + Theme.barHeight - 0.5
     anchors.right: parent.right
+    anchors.rightMargin: Theme.edgeMargin
 
     property string view: "drawer"
 
     readonly property bool open: tray.mode !== "closed"
-    readonly property bool engaged: open || opacity > 0
+    readonly property bool engaged: open || height > 0
     visible: engaged
 
-    readonly property int drawerWidth: Math.max(420, Math.min(460, drawerRow.implicitWidth + 16))
+    readonly property int drawerWidth: Math.max(420, Math.min(460, drawerRow.implicitWidth + 24))
 
     readonly property int contentHeight: Math.min(
         Theme.popoutSpace,
-        view === "menu" ? menuCol.implicitHeight + 16 + tuck
+        view === "menu" ? menuCol.implicitHeight + 24
                         : drawerCol.implicitHeight)
 
     onEngagedChanged: if (!engaged) tray.clearMenus()
@@ -43,42 +44,17 @@ Rectangle {
     onOpenChanged: if (open) keys.forceActiveFocus()
 
     width: drawerWidth
-    // full-size while engaged; zero when closed so the bar's input mask
-    // region collapses with it
-    height: engaged ? contentHeight : 0
-
-    // macOS popover: appear full-size, scale from the bar edge with a fade
-    scale: open ? 1 : 0.96
-    opacity: open ? 1 : 0
-    transformOrigin: Item.TopRight
-
-    Behavior on scale {
-        NumberAnimation {
-            duration: popout.open ? 240 : 140
-            easing.type: popout.open ? Easing.OutBack : Easing.InQuad
-        }
-    }
-
-    Behavior on opacity {
-        NumberAnimation {
-            duration: popout.open ? 170 : 130
-            easing.type: popout.open ? Easing.OutQuad : Easing.InQuad
-        }
-    }
-
-    // only animate content-size changes while open; open/close snaps so the
-    // popover never height-reveals
+    height: open ? contentHeight : 0
     Behavior on height {
-        enabled: popout.open && popout.height > 0
-        NumberAnimation { duration: 240; easing.type: Easing.OutQuint }
+        NumberAnimation {
+            duration: popout.open ? Theme.popupAnimMs : Theme.dismissAnimMs
+            easing.type: Easing.OutCubic
+        }
     }
-    Behavior on width { NumberAnimation { duration: 240; easing.type: Easing.OutQuint } }
+    Behavior on width { NumberAnimation { duration: Theme.popupAnimMs; easing.type: Easing.OutCubic } }
 
-    color: Theme.base
-    radius: Theme.popupRounding
-    topLeftRadius: 0
-    topRightRadius: 0
-    bottomRightRadius: 0
+    color: "transparent"
+    AttachedSurface { target: popout; borderlessRight: true }
 
     HoverHandler {
         onHoveredChanged: popout.tray.popupHovered = hovered
@@ -88,10 +64,11 @@ Rectangle {
         id: hoverBridge
         parent: popout.parent
         visible: popout.open
-        anchors.top: parent.top
+        y: Theme.edgeMargin
         anchors.right: parent.right
+        anchors.rightMargin: Theme.edgeMargin
         width: popout.width
-        height: Theme.barHeight
+        height: visible ? Theme.barHeight : 0
 
         HoverHandler {
             onHoveredChanged: popout.tray.bridgeHovered = hovered
@@ -132,9 +109,8 @@ Rectangle {
             Behavior on x { NumberAnimation { duration: 260; easing.type: Easing.OutQuint } }
         }
         Behavior on opacity { NumberAnimation { duration: 150 } }
-        padding: 8
-        topPadding: 8 + popout.tuck
-        spacing: 6
+        padding: 12
+        spacing: 8
 
         RowLayout {
             id: drawerRow
@@ -179,14 +155,14 @@ Rectangle {
 
         Rectangle {
             visible: drawerRow.visible
-            width: parent.width - 16
+            width: parent.width - 24
             height: 1
             color: Theme.overlay
             opacity: 0.4
         }
 
         RowLayout {
-            width: parent.width - 16
+            width: parent.width - 24
             spacing: 6
 
             BarText {
@@ -246,9 +222,9 @@ Rectangle {
 
         BarText {
             visible: Services.Notifications.list.length === 0
-            width: parent.width - 16
+            width: parent.width - 24
             text: "No notifications"
-            color: Theme.overlay
+            color: Theme.subtext
             font.pixelSize: Theme.fontSizeSmall
             horizontalAlignment: Text.AlignHCenter
             topPadding: 8
@@ -258,7 +234,7 @@ Rectangle {
         ListView {
             id: centerList
             visible: Services.Notifications.list.length > 0
-            width: parent.width - 16
+            width: parent.width - 24
             implicitHeight: Math.min(contentHeight, Theme.popoutSpace - 140)
             clip: true
             spacing: 6
@@ -311,8 +287,7 @@ Rectangle {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.margins: 8
-        anchors.topMargin: 8 + popout.tuck
+        anchors.margins: 12
         visible: opacity > 0
         enabled: popout.view === "menu"
         opacity: popout.view === "menu" ? 1 : 0

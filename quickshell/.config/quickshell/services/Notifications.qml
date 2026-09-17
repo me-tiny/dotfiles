@@ -205,7 +205,6 @@ Singleton {
             return dnd()
         }
 
-        // hide the newest popup (keeps it in the drawer list)
         function dismiss(): string {
             const visible = root.popups.filter(n => !root.exiting.includes(n))
             if (visible.length === 0) return "none"

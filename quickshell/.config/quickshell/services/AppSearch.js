@@ -1,5 +1,3 @@
-// Desktop-entry search scoring
-
 function entryName(entry) {
   return String((entry && entry.name) || (entry && entry.id) || "")
 }
@@ -98,7 +96,6 @@ function fuzzyScore(entry, query) {
 
 function frecency(usage, now) {
   if (!usage) return 0
-  // Each launch adds one point; its weight halves every seven days.
   return usage.score * Math.pow(0.5, Math.max(0, now - usage.lastUsed) / (7 * 24 * 60 * 60 * 1000))
 }
 
