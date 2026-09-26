@@ -13,5 +13,5 @@ if clang++ -std=c++23 -O3 -DNDEBUG "$file" -o "$output"; then
     "${output:a}"
 else
     echo "build failed"
-    exit1
+    exit 1
 fi
