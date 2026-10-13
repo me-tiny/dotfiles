@@ -78,7 +78,6 @@ scrollback-limit = 10000000
 custom-shader-animation = true
 shell-integration-features = no-cursor,no-sudo,title,ssh-env
 bell-features = no-system,no-title,no-attention
-async-backend = epoll
 resize-overlay = never
 
 clipboard-read = allow
