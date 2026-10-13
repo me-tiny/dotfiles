@@ -13,7 +13,6 @@ hl.config({
     cursor = {
         no_hardware_cursors = 0,
         default_monitor = "DP-3",
-        hide_on_key_press = true,
     },
     general = {
         gaps_in = 0,
