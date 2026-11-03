@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+if systemctl --user is-active -q ps5-loopback; then
+    systemctl --user stop ps5-loopback
+    notify-send "🎮 PS5 audio off"
+else
+    systemctl --user start ps5-loopback
+    notify-send "🎮 PS5 audio on"
+fi

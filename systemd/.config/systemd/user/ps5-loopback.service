@@ -1,0 +1,20 @@
+# PS5 audio: UR23 (optical in) -> default sink, on demand only.
+#
+# Deliberately has no [Install] section. The UR23 produces no clock when the
+# PS5/UT23 isn't sending S/PDIF: its ALSA pointer never advances, PipeWire
+# runs xrun recovery on the RT thread every cycle, and the whole graph
+# crackles. So the loopback must only exist while the PS5 is on.
+# Toggle with `togps5` (bound in hypr binds.lua).
+
+[Unit]
+Description=PS5 audio loopback (UR23 -> default sink)
+Requires=pipewire.service
+After=pipewire.service wireplumber.service
+# Stop with PipeWire instead of lingering against a dead daemon.
+PartOf=pipewire.service
+
+[Service]
+ExecStart=/usr/bin/pw-loopback --name=ps5 \
+    --capture-props='node.name=ps5_capture node.description=PS5 target.object=alsa_input.usb-HiFimeDIY_Audio_UR23_USB_SPDIF_Rx-01.analog-stereo node.latency=256/48000 stream.dont-remix=true' \
+    --playback-props='node.name=ps5_playback node.description=PS5'
+Restart=on-failure
